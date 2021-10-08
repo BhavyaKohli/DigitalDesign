@@ -1,0 +1,26 @@
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity DUT is
+   port(input_vector: in std_logic_vector(1 downto 0);
+       	output_vector: out std_logic_vector(2 downto 0));
+end entity;
+
+architecture DutWrap of DUT is
+   component sequence_generator_behavior is
+     port (reset,clock: in std_logic; y: out std_logic_vector(2 downto 0));
+	 end component;
+begin
+
+   -- input/output vector element ordering is critical,
+   -- and must match the ordering in the trace file!
+   add_instance: sequence_generator_behavior
+			port map (
+					-- order of inputs Reset, clock
+					reset => input_vector(1),
+					clock => input_vector(0),
+		
+					-- order of outputs y
+					y => output_vector);			
+end DutWrap;
+
